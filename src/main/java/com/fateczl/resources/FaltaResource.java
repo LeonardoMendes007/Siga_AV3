@@ -8,13 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fateczl.entities.Aluno;
-import com.fateczl.entities.Disciplina;
 import com.fateczl.entities.Falta;
 import com.fateczl.entities.TurmaFalta;
 import com.fateczl.entities.TurmaFaltaList;
@@ -87,19 +85,10 @@ public class FaltaResource {
 	}
 	
 	
-	@PostMapping("/{disciplina}/{ra}/{dataFalta}")
-	public ResponseEntity getFaltas(@PathVariable("disciplina") String disciplina,@PathVariable("ra") String aluno, @PathVariable("dataFalta") String data, @RequestBody Falta falta){
+	@PutMapping("/{disciplina}/{ra}/{dataFalta}")
+	public ResponseEntity insereFaltas(@PathVariable("disciplina") String disciplina,@PathVariable("ra") String aluno, @PathVariable("dataFalta") String data, @RequestBody Falta falta){
 		
-		Aluno a = repAlu.findById(aluno).get();
-		Disciplina d = repDi.findById(disciplina).get();
-		
-		falta.setAluno(a);
-		falta.setDisciplina(d);
-		falta.setData(data);
-		
-		
-		
-		rep.save(falta);
+		rep.atualizarFalta(falta.getPresenca(), data, aluno, disciplina);
 	    
 		return ResponseEntity.noContent().build();
 	}
